@@ -1,0 +1,19 @@
+// Necromancer Sprite Sheet Configuration
+// Fixed animation rows for single-row spritesheet
+
+Texture PlayerSprite
+Size 60 37      // Individual sprite size
+Scale 2.0 2.0   // Keep current scale
+
+// Animation type
+AnimationType Directional
+
+// Animation parameters for basic movement - all on Row 0 since single row spritesheet
+// Format: Animation Name StartFrame EndFrame Row FrameTime ActionStart ActionEnd
+Animation Idle 0  3  0 0.15 -1 -1    // First 4 frames for idle
+Animation Walk 4  15 0 0.12 -1 -1    // Next 12 frames for walking
+
+// Frame properties
+FrameWidth 60    // Width of each frame
+FrameHeight 37   // Height of each frame
+FrameMargin 0    // No margin between frames
