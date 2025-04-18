@@ -2,18 +2,18 @@
 // Fixed animation rows for single-row spritesheet
 
 Texture PlayerSprite
-Size 60 37      // Individual sprite size
-Scale 2.0 2.0   // Keep current scale
-
-// Animation type
+Size 50 37
+Scale 1.5 1.5
+|Type|Name|StartFrame|EndFrame|Row|FrameTime|FrameActionStart|FrameActionEnd|
 AnimationType Directional
-
-// Animation parameters for basic movement - all on Row 0 since single row spritesheet
-// Format: Animation Name StartFrame EndFrame Row FrameTime ActionStart ActionEnd
-Animation Idle 0  3  0 0.15 -1 -1    // First 4 frames for idle
-Animation Walk 4  15 0 0.12 -1 -1    // Next 12 frames for walking
+Animation Idle 0 3 0 0.1 -1 -1
+Animation Walk 0 5 2 0.1 -1 -1
+Animation Jump 0 3 4 0.2 -1 -1
+Animation Attack 0 3 6 0.05 7 8
+Animation Hurt 0 2 10 0.08 -1 -1
+Animation Death 0 7 12 0.15 -1 -1
 
 // Frame properties
-FrameWidth 60    // Width of each frame
+FrameWidth 50    // Width of each frame
 FrameHeight 37   // Height of each frame
 FrameMargin 0    // No margin between frames
