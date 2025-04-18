@@ -23,40 +23,34 @@ void State_LevelCompleted::OnCreate(){
 
 	m_text.setPosition(400,100);
 	
+	// Keep original button size, position, and padding
 	m_buttonSize = sf::Vector2f(300.0f,32.0f);
-	m_buttonPos = sf::Vector2f(400,200);
-	m_buttonPadding = 4; // 4px.
+	m_buttonPos = sf::Vector2f(400,200); // Position for the single button
+	m_buttonPadding = 4; // Not really needed now, but keep for consistency
 
-	std::string str[2];
-	str[0] = "Play Next Level";
-	str[1] = "Exit to Main Menu";
+	// Only one label needed
+	std::string str = "Exit to Main Menu"; 
 
-	for(int i = 1; i < 2; ++i){
-		sf::Vector2f buttonPosition(
-			m_buttonPos.x,m_buttonPos.y + 
-			(i * (m_buttonSize.y + m_buttonPadding)));
-		m_rects[i].setSize(m_buttonSize);
-		m_rects[i].setFillColor(sf::Color::Red);
+	// Setup the single button (index 0)
+	m_rects[0].setSize(m_buttonSize);
+	m_rects[0].setFillColor(sf::Color::Red); // Keep color, you might want to change it
+	m_rects[0].setOrigin(m_buttonSize.x / 2.0f, m_buttonSize.y / 2.0f);
+	m_rects[0].setPosition(m_buttonPos); // Use the defined position
 
-		m_rects[i].setOrigin(
-			m_buttonSize.x / 2.0f, m_buttonSize.y / 2.0f);
-		m_rects[i].setPosition(buttonPosition);
+	m_labels[0].setFont(m_font);
+	m_labels[0].setString(sf::String(str));
+	m_labels[0].setCharacterSize(20);
 
-		m_labels[i].setFont(m_font);
-		m_labels[i].setString(sf::String(str[i]));
-		m_labels[i].setCharacterSize(20);
+	sf::FloatRect rect = m_labels[0].getLocalBounds();
+	m_labels[0].setOrigin(
+		rect.left + rect.width / 2.0f,
+		rect.top + rect.height / 2.0f);
 
-		sf::FloatRect rect = m_labels[i].getLocalBounds();
-		m_labels[i].setOrigin(
-			rect.left + rect.width / 2.0f,
-			rect.top + rect.height / 2.0f);
+	m_labels[0].setPosition(m_buttonPos); // Position label at the same spot
 
-		m_labels[i].setPosition(buttonPosition);
-	}
-
+	// Register the callback
 	EventManager* evMgr = m_stateMgr->
 		GetContext()->m_eventManager;
-	
 	evMgr->AddCallback(StateType::LevelCompleted, "Mouse_Left", &State_LevelCompleted::MouseClick, this);
 }
 
@@ -74,18 +68,15 @@ void State_LevelCompleted::MouseClick(EventDetails* l_details){
 
 	float halfX = m_buttonSize.x / 2.0f;
 	float halfY = m_buttonSize.y / 2.0f;
-	for(int i = 0; i < 2; ++i){
-		if(mousePos.x>=m_rects[i].getPosition().x - halfX &&
-			mousePos.x<=m_rects[i].getPosition().x + halfX &&
-			mousePos.y>=m_rects[i].getPosition().y - halfY &&
-			mousePos.y<=m_rects[i].getPosition().y + halfY)
-		{
-			if(i == 0){
-				std::cout<<"next map"<<std::endl;
-			} else if(i == 1){
-				m_stateMgr->SwitchTo(StateType::MainMenu);
-			}
-		}
+	
+	// Check only the first button (index 0)
+	if(mousePos.x >= m_rects[0].getPosition().x - halfX &&
+	   mousePos.x <= m_rects[0].getPosition().x + halfX &&
+	   mousePos.y >= m_rects[0].getPosition().y - halfY &&
+	   mousePos.y <= m_rects[0].getPosition().y + halfY)
+	{
+		// Always switch to Main Menu when the button is clicked
+		m_stateMgr->SwitchTo(StateType::MainMenu);
 	}
 }
 
@@ -93,10 +84,10 @@ void State_LevelCompleted::Draw(){
 	sf::RenderWindow* window = m_stateMgr->
 		GetContext()->m_wind->GetRenderWindow();
 	window->draw(m_text);
-	for(int i = 0; i < 2; ++i){
-		window->draw(m_rects[i]);
-		window->draw(m_labels[i]);
-	}
+	
+	// Draw only the first button (index 0)
+	window->draw(m_rects[0]);
+	window->draw(m_labels[0]);
 }
 
 

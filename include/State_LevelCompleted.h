@@ -26,8 +26,9 @@ private:
 	sf::Vector2f m_buttonPos;
 	unsigned int m_buttonPadding;
 
-	sf::RectangleShape m_rects[2];
-	sf::Text m_labels[2];
+	// Changed array size from 2 to 1
+	sf::RectangleShape m_rects[1]; 
+	sf::Text m_labels[1];
 
 	sf::SoundBuffer m_bufferSuccessSound;
 	sf::Sound m_SuccessSound;
