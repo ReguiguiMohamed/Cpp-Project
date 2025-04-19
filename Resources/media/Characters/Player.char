@@ -2,7 +2,7 @@ Name Player
 Spritesheet Player.sheet
 Hitpoints 5
 BoundingBox 20 46
-DamageBox -5 -20 70 70
+DamageBox 15 20 40 30
 Speed 1024 128
 JumpVelocity 300
 MaxVelocity 200 1024

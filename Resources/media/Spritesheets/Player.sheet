@@ -3,7 +3,7 @@
 
 Texture PlayerSprite
 Size 50 37
-Scale 1.5 1.5
+Scale 1.75 1.75
 |Type|Name|StartFrame|EndFrame|Row|FrameTime|FrameActionStart|FrameActionEnd|
 AnimationType Directional
 Animation Idle 0 3 0 0.1 -1 -1

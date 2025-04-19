@@ -37,19 +37,19 @@ void Player::React(EventDetails *l_details)
 {
 	if (l_details->m_name == "Player_MoveLeft")
 	{
-		m_spriteSheet.SetDirection(Direction::Left); // Set direction instead of animation
-		m_spriteSheet.SetAnimation("Walk", true, true);
 		Character::Move(Direction::Left);
 	}
 	else if (l_details->m_name == "Player_MoveRight")
 	{
-		m_spriteSheet.SetDirection(Direction::Right); // Set direction instead of animation
-		m_spriteSheet.SetAnimation("Walk", true, true);
 		Character::Move(Direction::Right);
 	}
-	else if (m_velocity.x == 0)
+	else if (l_details->m_name == "Player_Jump")
 	{
-		m_spriteSheet.SetAnimation("Idle", true, true);
+		Character::Jump();
+	}
+	else if (l_details->m_name == "Player_Attack")
+	{
+		Character::Attack();
 	}
 }
 
@@ -59,22 +59,35 @@ void Player::OnEntityCollision(EntityBase *l_collider, bool l_attack)
 	{
 		return;
 	}
-	if (l_attack)
+
+	// Only process if flagged as an attack, the player is in the Attacking state,
+	// and the other entity is an Enemy or even a Player (if intended)
+	if (l_attack && GetState() == EntityState::Attacking &&
+		(l_collider->GetType() == EntityType::Enemy || l_collider->GetType() == EntityType::Player))
 	{
-		if (m_state != EntityState::Attacking)
-		{
-			return;
-		}
-		if (!m_spriteSheet.GetCurrentAnim()->IsInAction())
-		{
-			return;
-		}
-		if (l_collider->GetType() != EntityType::Enemy &&
-			l_collider->GetType() != EntityType::Player)
-		{
-			return;
-		}
 		Character *opponent = (Character *)l_collider;
+
+		// Increase the attack hitbox "just a bit" compared to before.
+		// (Previous values were: left offset: -10; width extra: +20)
+		sf::FloatRect playerHitbox(
+			m_position.x - 8, // slightly less offset than before
+			m_position.y - 5, // unchanged vertical expansion
+			m_size.x + 28,	  // slightly larger width (was +20)
+			m_size.y + 10	  // unchanged height expansion
+		);
+
+		sf::FloatRect opponentHitbox(
+			opponent->GetPosition().x,
+			opponent->GetPosition().y,
+			opponent->GetSize().x,
+			opponent->GetSize().y);
+
+		// Only perform an attack if the opponent is within this adjusted range.
+		if (!playerHitbox.intersects(opponentHitbox))
+		{
+			return; // Opponent not in adjusted attack range.
+		}
+
 		opponent->GetHurt(1);
 		if (m_position.x > opponent->GetPosition().x)
 		{
@@ -87,6 +100,6 @@ void Player::OnEntityCollision(EntityBase *l_collider, bool l_attack)
 	}
 	else
 	{
-		// Other behavior.
+		// If not an attack collision, do nothing.
 	}
 }
