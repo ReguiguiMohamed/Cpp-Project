@@ -6,19 +6,19 @@
 #include "DebugOverlay.h"
 
 class Map;
-struct SharedContext{
-	SharedContext():
-		m_wind(nullptr),
-		m_eventManager(nullptr),
-		m_textureManager(nullptr),
-		m_entityManager(nullptr),
-		m_gameMap(nullptr){}
+struct SharedContext
+{
+	SharedContext() : m_wind(nullptr),
+					  m_eventManager(nullptr),
+					  m_textureManager(nullptr),
+					  m_entityManager(nullptr),
+					  m_gameMap(nullptr) {}
 
-	Window* m_wind;
-	EventManager* m_eventManager;
-	TextureManager* m_textureManager;
-	EntityManager* m_entityManager;
-	Map* m_gameMap;
+	Window *m_wind;
+	EventManager *m_eventManager;
+	TextureManager *m_textureManager;
+	EntityManager *m_entityManager;
+	Map *m_gameMap;
 	DebugOverlay m_debugOverlay;
 
 	// Game related variables
@@ -29,8 +29,4 @@ struct SharedContext{
 
 	// pickup items
 	int m_gold;
-	int m_books;
-	int m_rocks;
-	int m_totalBooks;
-	int m_totalRocks;
 };

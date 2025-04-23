@@ -52,7 +52,6 @@ void State_MainMenu::OnCreate()
 	str[0] = "PLAY";
 	str[1] = "Open Test Map";
 	str[2] = "EXIT";
-
 	for (int i = 0; i < 3; ++i)
 	{
 		sf::Vector2f buttonPosition(
@@ -110,7 +109,6 @@ void State_MainMenu::MouseClick(EventDetails *l_details)
 			else if (i == 1)
 			{
 				// Credits state.
-
 				std::cout << "Player chose map 0" << std::endl;
 				m_stateMgr->GetContext()->m_mapNumber = 0;
 				m_stateMgr->SwitchTo(StateType::Game);
@@ -122,11 +120,9 @@ void State_MainMenu::MouseClick(EventDetails *l_details)
 		}
 	}
 }
-
 void State_MainMenu::Draw()
 {
 	sf::RenderWindow *window = m_stateMgr->GetContext()->m_wind->GetRenderWindow();
-
 	window->draw(m_rect);
 	window->draw(m_text);
 	window->draw(m_logo);
@@ -136,7 +132,6 @@ void State_MainMenu::Draw()
 		window->draw(m_labels[i]);
 	}
 }
-
 void State_MainMenu::Activate()
 {
 	m_stateMgr->Remove(StateType::Game);

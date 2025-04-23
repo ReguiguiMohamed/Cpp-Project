@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Graphics/Font.hpp>
 #include <unordered_map>
 #include <map>
 #include <array>
@@ -9,19 +10,40 @@
 #include "SharedContext.h"
 #include "BaseState.h"
 #include "Character.h"
+#include <vector>
+enum Sheet
+{
+	Tile_Size = 32,
+	Sheet_Width = 1760,
+	Sheet_Height = 1120
+};
 
-enum Sheet{ Tile_Size = 32, Sheet_Width = 1760, Sheet_Height = 1120 };
+// Add this enum definition
+enum class Tile_Property
+{
+	Default = 0,
+	Coin = 1
+	// Add other tile properties as needed
+};
 
 using TileID = unsigned int;
 
-struct TileInfo{
-	TileInfo(SharedContext* l_context, 
-		const std::string& l_texture = "", TileID l_id = 0)
+struct TileInfo
+{
+	TileInfo(SharedContext *l_context,
+			 const std::string &l_texture = "", TileID l_id = 0)
 		: m_context(l_context), m_id(0), m_deadly(false)
 	{
-		TextureManager* tmgr = l_context->m_textureManager;
-		if (l_texture == ""){ m_id = l_id; return; }
-		if (!tmgr->RequireResource(l_texture)){ return; }
+		TextureManager *tmgr = l_context->m_textureManager;
+		if (l_texture == "")
+		{
+			m_id = l_id;
+			return;
+		}
+		if (!tmgr->RequireResource(l_texture))
+		{
+			return;
+		}
 		m_texture = l_texture;
 		m_id = l_id;
 		m_sprite.setTexture(*tmgr->GetResource(m_texture));
@@ -33,14 +55,18 @@ struct TileInfo{
 		int x = m_id - (y * (Sheet::Sheet_Width / Sheet::Tile_Size));
 
 		sf::IntRect tileBoundaries(x * Sheet::Tile_Size,
-			y * Sheet::Tile_Size,
-			Sheet::Tile_Size,Sheet::Tile_Size);
-		
+								   y * Sheet::Tile_Size,
+								   Sheet::Tile_Size, Sheet::Tile_Size);
+
 		m_sprite.setTextureRect(tileBoundaries);
 	}
 
-	~TileInfo(){
-		if (m_texture == ""){ return; }
+	~TileInfo()
+	{
+		if (m_texture == "")
+		{
+			return;
+		}
 		m_context->m_textureManager->ReleaseResource(m_texture);
 	}
 
@@ -51,36 +77,38 @@ struct TileInfo{
 	sf::Vector2f m_friction;
 	bool m_deadly;
 
-	SharedContext* m_context;
+	SharedContext *m_context;
 	std::string m_texture;
 };
 
-struct Tile{
-	TileInfo* m_properties;
+struct Tile
+{
+	TileInfo *m_properties;
 	bool m_warp; // Is the tile a warp.
-	// Other flags unique to each tile.
+				 // Other flags unique to each tile.
 };
 
-using TileMap = std::unordered_map<TileID,Tile*>;
-using TileSet = std::unordered_map<TileID,TileInfo*>;
+using TileMap = std::unordered_map<TileID, Tile *>;
+using TileSet = std::unordered_map<TileID, TileInfo *>;
 
-class Map{
+class Map
+{
 public:
-	Map(SharedContext* l_context, BaseState* l_currentState);
+	Map(SharedContext *l_context, BaseState *l_currentState);
 	~Map();
 
-	Tile* GetTile(unsigned int l_x, unsigned int l_y);
-	Tile* GetTileBackground(unsigned int l_x, unsigned int l_y);
-	TileInfo* GetDefaultTile();
+	Tile *GetTile(unsigned int l_x, unsigned int l_y);
+	Tile *GetTileBackground(unsigned int l_x, unsigned int l_y);
+	TileInfo *GetDefaultTile();
 
-	float GetGravity()const;
-	unsigned int GetTileSize()const;
-	const sf::Vector2u& GetMapSize()const;
-	const sf::Vector2f& GetPlayerStart()const;
+	float GetGravity() const;
+	unsigned int GetTileSize() const;
+	const sf::Vector2u &GetMapSize() const;
+	const sf::Vector2f &GetPlayerStart() const;
 	std::string GetMusicName();
 
-	void LoadMap(const std::string& l_path);
-	void LoadBackGround(const std::string& l_path);
+	void LoadMap(const std::string &l_path);
+	void LoadBackGround(const std::string &l_path);
 	void LoadNext();
 
 	void Update(float l_dT);
@@ -91,7 +119,7 @@ public:
 private:
 	// Method for converting 2D coordinates to 1D ints.
 	unsigned int ConvertCoords(unsigned int l_x, unsigned int l_y);
-	void LoadTiles(const std::string& l_path);
+	void LoadTiles(const std::string &l_path);
 	void PurgeMap();
 	void PurgeMapBackground();
 	void PurgeTileSet();
@@ -112,12 +140,12 @@ private:
 	std::string m_nextMap;
 	bool m_loadNextMap;
 	std::string m_backgroundTexture;
-	BaseState* m_currentState;
-	SharedContext* m_context;
+	BaseState *m_currentState;
+	SharedContext *m_context;
 
-	sf::Sprite m_items[3];
-	sf::Text m_labels[3];
-	sf::Font m_font;
+	sf::Font m_font; // Add this line
+	std::vector<sf::Sprite> m_items; // Change from sf::Sprite m_items[1]
+	std::vector<sf::Text> m_labels;	 // Change from sf::Text m_labels[1]
 
 	std::string m_musicName;
 	int m_totalEnemies;

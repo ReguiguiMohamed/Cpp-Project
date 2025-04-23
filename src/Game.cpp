@@ -9,7 +9,7 @@ Game::Game(int x, int y) : m_window("Alpha Version", sf::Vector2u(1920, 1080)),
 	m_context.m_eventManager = m_window.GetEventManager();
 	m_context.m_textureManager = &m_textureManager;
 	m_context.m_entityManager = &m_entityManager;
-
+	m_context.m_gold = 0;
 	m_stateManager.SwitchTo(StateType::Intro);
 }
 

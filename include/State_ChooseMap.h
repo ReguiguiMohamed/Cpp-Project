@@ -2,9 +2,10 @@
 #include "BaseState.h"
 #include "EventManager.h"
 
-class State_ChooseMap : public BaseState{
+class State_ChooseMap : public BaseState
+{
 public:
-	State_ChooseMap(StateManager* l_stateManager);
+	State_ChooseMap(StateManager *l_stateManager);
 	~State_ChooseMap();
 
 	void OnCreate();
@@ -13,10 +14,10 @@ public:
 	void Activate();
 	void Deactivate();
 
-	void Update(const sf::Time& l_time);
+	void Update(const sf::Time &l_time);
 	void Draw();
 
-    void MouseClick(EventDetails* l_details);
+	void MouseClick(EventDetails *l_details);
 
 private:
 	sf::Font m_font;
@@ -27,6 +28,6 @@ private:
 	unsigned int m_buttonPadding;
 
 	// Changed array size from 3 to 2
-	sf::RectangleShape m_rects[2]; 
-	sf::Text m_labels[2];
+	sf::RectangleShape m_rects[3];
+	sf::Text m_labels[3];
 };
